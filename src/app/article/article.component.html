@@ -1,0 +1,10 @@
+
+<div class="container" *ngFor="let article of articles[0]; index as i">
+    <div class="col-md-12" >
+    <h1 class="text-center">Article {{i+1}}</h1>
+    <div class="ql-container ql-snow" style="border-width: 0;">
+      <div style="width: 100%" class="ql-editor bg-light" *ngIf="article!=null" [innerHTML]="article | safe: 'html'" >
+      </div>
+      </div>
+  </div>
+</div>

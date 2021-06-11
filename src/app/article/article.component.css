@@ -1,0 +1,14 @@
+p{
+    text-align: justify;
+    font-size: 200px;
+}
+
+.ql-editor{
+    /* background-color: aqua; */
+    font-size: 20px; 
+    padding: 20px 10px;
+}
+
+.ql-editor pre{
+    height: 20vh;
+}
