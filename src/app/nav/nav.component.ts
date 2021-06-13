@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import  firebase  from 'firebase/app';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
-  constructor() { }
+  isLogged= false;
+  constructor(public authService :AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.isLogged = this.authService.isLoggedIn
+    // console.log(this.isLogged);
+    
+  }
+
+  signOut(){
+    this.authService.SignOut();
+    this.router.navigate(['login'])
   }
 
 }

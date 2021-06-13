@@ -1,3 +1,42 @@
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+
+
+.mat-form-field{
+    width: 100%;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #000 !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #fff !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: #000 !important;;
+  }
+
+  .title{
+      font-size: 25px;
+      font-weight: bold;
+  }
+  .sub-title{
+      font-size: 16px;
+      font-weight: normal;
+      color: rgb(92, 92, 92);
+  }
+  .category{
+      font-size: 18px;
+      color: rgb(92, 92, 92);
+  }
+
 p{
     text-align: justify;
     font-size: 200px;
@@ -7,8 +46,22 @@ p{
     /* background-color: aqua; */
     font-size: 20px; 
     padding: 20px 10px;
+    line-height: 30px;
 }
 
 .ql-editor pre{
     height: 20vh;
+}
+
+.ql-syntax{
+    background-color: antiquewhite !important;
+}
+
+
+
+@media screen and (min-width:900px) {
+    .container {
+        padding: 0 250px;
+    }
+    
 }

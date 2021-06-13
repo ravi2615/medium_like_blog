@@ -1,26 +1,49 @@
 
 
-<div class="container p-5">
+<div class="container p-md-5 p-3">
     <div class="row">
       <div class="col-md-10">
         <form [formGroup] = "editorForm" (ngSubmit)="onSubmit()">
+          <mat-form-field floatLabel='never' class="title">
+            <input matInput formControlName="title"  placeholder="Title" (ngModelChange)="onChangeTitle($event)"  required>
+           </mat-form-field>
+           <mat-form-field floatLabel='never' class="sub-title">
+            <input matInput formControlName="subtitle"  placeholder="Sub-title" (ngModelChange)="onChangeSubTitle($event)"  required>
+           </mat-form-field>
           <div class="form-group">
-            <label for="editor"><h3>Editor</h3></label>
+            <label for="editor"><h3>Description</h3></label>
             <div class=" bg-light">
               <quill-editor [styles]="editorStyle" [modules]="config" (ngModelChange)="onChange($event)" (onContentChanged)="maxLength($event)" formControlName="editor"></quill-editor>
               <span *ngIf="editorForm.get('editor').value != null">{{ 1000000 - editorForm.get('editor').value.length }}</span>
             </div>
           </div>
-          <button class="btn btn-primary mt-5">Submit</button>
+          <mat-form-field floatLabel='never' class="category">
+            <input matInput formControlName="category"  placeholder="category" (ngModelChange)="onChangeCategory($event)"  required>
+           </mat-form-field>
+           <mat-radio-button class="ml-2" (change)="onSelect($event)" value="public"> Public</mat-radio-button>
+           <mat-radio-button class="ml-2" (change)="onSelect($event)" value="private"> Private</mat-radio-button><br>
+          <button class="btn btn-primary mt-5" [disabled]="!editorForm.valid">Submit</button>
         </form>
       </div>
       
-      <div class="col-md-10"  *ngIf="editorContent!=null">
-        <h3>Preview</h3><div class="ql-container ql-snow" style="border-width: 0;">
-          <div style="width: 100%" class="ql-editor bg-light" *ngIf="editorContent!=null" [innerHTML]="editorContent | safe: 'html'" >
+      <div class="col-md-10"  *ngIf="editorContent!=null || title !=null || subTitle != null">
+        <h3>Preview</h3>
+        <div class="ql-container ql-snow my-5" style="border-width: 0;">
+              <h1 class="text-center"  *ngIf="title!=null" [innerHTML]="title" 
+              style=
+              "font-size:35px; 
+              font-weight:bold"></h1>
+              <h4 class="text-center mb-5" *ngIf="subTitle!=null" 
+              style=
+              "font-size: 18px;
+              font-weight: normal;
+              color: rgb(92, 92, 92);
+              text-indent:10px">{{'-'+ subTitle}}</h4>
+            <div class="ql-container ql-snow" 
+            style= "border-width: 0;">
+              <div style="width: 100%" class="ql-editor bg-light p-md-5 p-1" *ngIf="editorContent!=null" [innerHTML]="editorContent | safe: 'html'" >
           </div>
           </div>
       </div>
     </div>
    </div>
-  

@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,6 +10,18 @@ import { ArticleComponent } from './article/article.component';
 import { AppRoutingModule } from './app-routing.module';
 import { WriteComponent } from './write/write.component';
 import { NavComponent } from './nav/nav.component';
+import { AuthComponent } from './auth/auth.component';
+import { MaterialModule } from './material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ToastrModule } from 'ngx-toastr';
+import { UserBlogComponent } from './user/user-blog/user-blog.component';
+import { SingleBlogComponent } from './single-blog/single-blog.component';
 
 @NgModule({
   declarations: [
@@ -16,16 +29,27 @@ import { NavComponent } from './nav/nav.component';
     SafePipe,
     ArticleComponent,
     WriteComponent,
-    NavComponent
+    NavComponent,
+    AuthComponent,
+    VerifyEmailComponent,
+    ForgotPasswordComponent,
+    UserBlogComponent,
+    SingleBlogComponent,
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     FormsModule,
     QuillModule.forRoot(),
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

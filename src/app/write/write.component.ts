@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import * as QuillNamespace from 'quill';
@@ -12,9 +15,14 @@ Quill.register('modules/imageResize', ImageResize);
 })
 export class WriteComponent implements OnInit {
   editorContent={};
-  temp=[]
   Article={};
   editorForm: FormGroup;
+  title;
+  subTitle;
+  category;
+  view;
+  isEmailVerified=false;
+  temp={title:'', subtitle:'', blog: {}, category: '', view: ''}
   editorStyle={
     height: '300px',
     backgroundColor: '#fff',
@@ -25,20 +33,20 @@ export class WriteComponent implements OnInit {
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
       ['blockquote', 'code-block'],
   
-      // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      // [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      // [{ 'direction': 'rtl' }],                         // text direction
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
   
-      // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
   
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
       [{ 'align': [] }],
   
-      // ['clean'],                                      // remove formatting button
+      ['clean'],                                      // remove formatting button
   
       ['link', 'image', 'video']                         // link and image, video
     ],
@@ -46,30 +54,46 @@ export class WriteComponent implements OnInit {
     imageResize: true,
 
   }
+  constructor(private authService:AuthService, private toastr : ToastrService, private router : Router){}
   
   ngOnInit() {
     this.editorForm = new FormGroup({
-      'editor': new FormControl(null)
+      'editor': new FormControl(null),
+      'title': new FormControl(null),
+      'subtitle': new FormControl(null),
+      'category': new FormControl(null),
     });
+    
     this.editorContent=null;
+    this.title=null;
+    this.subTitle=null;
+    this.category=null;
+    this.view='public';
 
-    // if(this.editorContent==''){
-    //   this.editorContent = JSON.parse(localStorage.getItem('html'));
-    // }
+    this.isEmailVerified = this.authService.userData?.emailVerified != null || this.authService.userData?.emailVerified ? true : false;
+
   }
+
 
   onSubmit(){
-    this.editorContent=this.editorForm.get('editor').value
-    // console.log(this.editorForm.get('editor').value);
-    if(JSON.parse(localStorage.getItem('html')))
-    {
-    this.temp.push(JSON.parse(localStorage.getItem('html')));
-  }
-    this.temp.push(this.editorContent)
-    this.Article=(this.temp)
-    
-    localStorage.setItem("html",JSON.stringify(this.Article));
-    this.ngOnInit();
+    if(this.isEmailVerified){
+      this.editorContent=this.editorForm.get('editor').value
+      // console.log(this.editorForm.get('editor').value);
+      this.temp.title = this.title;
+      this.temp.subtitle = this.subTitle;
+      this.temp.blog = this.editorContent;
+      this.temp.category = this.category;
+      this.temp.view = this.view;
+      this.Article=(this.temp)
+      
+      this.authService.createBlog(this.Article);
+      this.ngOnInit();
+    }else {
+      this.toastr.info(`Please Verify your email: ${this.authService.userData?.email} first`, '',{
+        timeOut: 10000
+      })
+      this.router.navigate(['verify-email-address']);
+    }
   }
 
   maxLength(e){
@@ -82,5 +106,20 @@ export class WriteComponent implements OnInit {
     // console.log(e);
     
     this.editorContent=e
+  }
+  onChangeTitle(e){
+    // console.log(e)
+    this.title=e;
+  }
+  onChangeSubTitle(e){
+    // console.log(e)
+    this.subTitle=e;
+  }
+  onChangeCategory(e){
+    this.category = e;
+  }
+  onSelect(e){console.log(this.view)
+    this.view = e.source.value != '' && e.source.value != null ? e.source.value : this.view;
+    console.log(this.view)
   }
 }

@@ -1,52 +1,48 @@
 import { Router } from '@angular/router';
-import { AuthService } from './../services/auth.service';
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-article',
-  templateUrl: './article.component.html',
-  styleUrls: ['./article.component.css']
+  selector: 'app-user-blog',
+  templateUrl: './user-blog.component.html',
+  styleUrls: ['./user-blog.component.css']
 })
-export class ArticleComponent implements OnInit {
-
+export class UserBlogComponent implements OnInit {
   articles:any;
-  article = '';
-  isLoading = false;
-  isData=true;
+  article;
+  isLoading= false;
+  isData=true
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     // this.articles= (JSON.parse(localStorage.getItem('blog')));
-    
-    this.isLoading = true;
-    this.authService.getAllBlog().subscribe(res=>{
-      // console.log(res);
+    this.isLoading=true;
+    this.authService.getUserBlog().subscribe(res=>{
+
       this.articles = res.map(e=>{
         // console.log(e.payload.doc.data());
-        if(e.payload.doc.data()['view'] == 'public')
         return {
-          _id: e.payload.doc.id,
+          _id:e.payload.doc.id,
           title:e.payload.doc.data()['title'],
           subtitle:e.payload.doc.data()['subtitle'],
           blog:e.payload.doc.data()['blog'],
           category:e.payload.doc.data()['category']
         }
       })
-      
-      this.isLoading = false// console.log(this.articles.length);
+
+      this.isLoading =false
+      // console.log(this.articles.length);
       if(!this.articles.length)
       this.isData=false
     })
-    
+    // console.log(this.articles);
   }
 
   singleRoute(id){
-    this.router.navigate(['single-blog',id])
+    this.router.navigateByUrl(`single-blog/${id}`);
   }
 
   search(search){
-    // console.log((search));
-    
     if(search == '')
     this.ngOnInit();
     else

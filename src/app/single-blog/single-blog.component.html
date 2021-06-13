@@ -1,0 +1,21 @@
+
+<div class="container my-5 py-5"  *ngFor="let article of articles; index as i">
+    <div class="row d-flex align-items-center justify-content-center col-md-12 p-md-5 p-1">
+    
+      <h1 class="text-center" [innerHTML]="article.title" 
+      style=
+      "font-size:35px; 
+      font-weight:bold"></h1>
+      <h4 class="text-center mb-5" 
+      style=
+      "font-size: 18px;
+      font-weight: normal;
+      color: rgb(92, 92, 92);
+      text-indent:10px">-{{article.subtitle}}</h4>
+    <div class="ql-container ql-snow" 
+    style= "border-width: 0;">
+      <div style="width: 100%" class="ql-editor bg-light p-md-5 p-1" *ngIf="article!=null" [innerHTML]="article.blog | safe: 'html'" >
+      </div>
+      </div>
+  </div>
+</div>
