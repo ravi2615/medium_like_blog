@@ -29,9 +29,14 @@ export class ArticleComponent implements OnInit {
           title:e.payload.doc.data()['title'],
           subtitle:e.payload.doc.data()['subtitle'],
           blog:e.payload.doc.data()['blog'],
-          category:e.payload.doc.data()['category']
+          category:e.payload.doc.data()['category'],
+          uid: e.payload.doc.data()['uid'],
+          photoURL: e.payload.doc.data()['photoURL'],
+          name: e.payload.doc.data()['displayName'],
         }
       })
+
+
       
       this.isLoading = false// console.log(this.articles.length);
       if(!this.articles.length)

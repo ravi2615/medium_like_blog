@@ -1,3 +1,4 @@
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { SingleBlogComponent } from './single-blog/single-blog.component';
 import { UserBlogComponent } from './user/user-blog/user-blog.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
@@ -13,19 +14,19 @@ import { AuthGuard } from './services/auth.gaurd';
 const routes: Routes = [
   { path:'', redirectTo:'blog', pathMatch:'full'},
   { path: 'blog', component: ArticleComponent },
-  { path: 'write', component: WriteComponent, canActivate:[AuthGuard],
-},
+  { path: 'write', component: WriteComponent, canActivate:[AuthGuard],},
   { path: 'login', component: AuthComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent, canActivate:[AuthGuard] },
   { path: 'user-blog', component: UserBlogComponent, canActivate:[AuthGuard]},
+  { path: 'my-profile/:id', component: UserProfileComponent, canActivate:[AuthGuard],},
   { path: 'single-blog/:id', component: SingleBlogComponent},
   { path: '**', redirectTo:'blog'}
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes,{useHash: true})
   ],
   exports: [RouterModule],
 

@@ -22,6 +22,7 @@
       </button>
       <mat-menu #menu="matMenu">
         
+      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="my-profile/{{uid}}">My Profile</a>
       <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="user-blog">My Article</a>
       <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="write">Write Article</a>
       <a class="nav-link" *ngIf="authService.isLoggedIn" (click)="signOut()" style="cursor: pointer;">Logout</a>

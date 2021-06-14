@@ -28,7 +28,12 @@
       
       <div class="col-md-10"  *ngIf="editorContent!=null || title !=null || subTitle != null">
         <h3>Preview</h3>
+        
         <div class="ql-container ql-snow my-5" style="border-width: 0;">
+          <div class="m-3">
+            <img *ngIf="temp.photoURL" src="{{temp.photoURL}}">
+            <span class="px-1">{{temp.displayName}}</span>
+          </div>
               <h1 class="text-center"  *ngIf="title!=null" [innerHTML]="title" 
               style=
               "font-size:35px; 

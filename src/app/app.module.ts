@@ -1,3 +1,4 @@
+import { AuthGuard } from './services/auth.gaurd';
 import { AuthService } from './services/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -22,6 +23,8 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { ToastrModule } from 'ngx-toastr';
 import { UserBlogComponent } from './user/user-blog/user-blog.component';
 import { SingleBlogComponent } from './single-blog/single-blog.component';
+import { BlogsComponent } from './shared/components/blogs.component';
+import { UserProfileComponent } from './user/user-profile/user-profile.component'
 
 @NgModule({
   declarations: [
@@ -35,6 +38,8 @@ import { SingleBlogComponent } from './single-blog/single-blog.component';
     ForgotPasswordComponent,
     UserBlogComponent,
     SingleBlogComponent,
+    BlogsComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,7 @@ import { SingleBlogComponent } from './single-blog/single-blog.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [AuthService],
+  providers: [AuthService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,24 @@
+<div class="container col-md-4 col-10 shadow p-3 mb-5 bg-white rounded">
+    <form class="row form px-md-5 d-flex align-items-center justify-content-center" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <img *ngIf="userData.photoURL" src= "{{userData.photoURL}}" class="shadow-sm p-2 mb-5 bg-white rounded">
+    <div>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Full Name </mat-label>
+            <input matInput formControlName="displayName" [value]="!!userData.displayName? userData.displayName :'Name'"  required>
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Profile pic url </mat-label>
+            <input matInput  formControlName="photoURL" [value]="!!userData.photoURL ? userData.photoURL : 'Photo URL'" required>
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Email </mat-label>
+            <input matInput disabled="true" [value]="!!userData.email ? userData.email : 'Email'" required>
+        </mat-form-field>
+        <div class=" d-flex flex-row m-1">
+            <button mat-raised-button type="submit" class="m-1" color="primary" [disabled]="!profileForm.valid">Save</button>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="isLoading" class="row d-flex fixed justify-content-center loading"><mat-spinner></mat-spinner></div>
+</div>

@@ -11,10 +11,12 @@ import { Component, OnInit } from '@angular/core';
 export class NavComponent implements OnInit {
 
   isLogged= false;
+  uid;
   constructor(public authService :AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.isLogged = this.authService.isLoggedIn
+    this.uid = JSON.parse(localStorage.getItem('user'))
     // console.log(this.isLogged);
     
   }

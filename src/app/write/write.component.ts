@@ -22,7 +22,7 @@ export class WriteComponent implements OnInit {
   category;
   view;
   isEmailVerified=false;
-  temp={title:'', subtitle:'', blog: {}, category: '', view: ''}
+  temp={title:'', subtitle:'', blog: {}, category: '', view: '',uid:'',photoURL:'',displayName:''}
   editorStyle={
     height: '300px',
     backgroundColor: '#fff',
@@ -54,6 +54,9 @@ export class WriteComponent implements OnInit {
     imageResize: true,
 
   }
+
+  name;
+  photoURL;
   constructor(private authService:AuthService, private toastr : ToastrService, private router : Router){}
   
   ngOnInit() {
@@ -70,6 +73,20 @@ export class WriteComponent implements OnInit {
     this.category=null;
     this.view='public';
 
+    this.authService.userProfile().subscribe(res=>{
+      res.map(user=>{
+        if(user.payload.doc.id == JSON.parse(localStorage.getItem('user'))){
+         this.temp.uid = user.payload.doc.data()['uid'],
+         this.temp.displayName = user.payload.doc.data()['displayName'],
+         this.temp.photoURL = user.payload.doc.data()['photoURL']   
+        }
+      })
+    })
+     // 
+
+    this.name = this.authService.userData?.displayName;
+    this.photoURL = this.authService.userData?.photoURL;
+
     this.isEmailVerified = this.authService.userData?.emailVerified != null || this.authService.userData?.emailVerified ? true : false;
 
   }
@@ -84,6 +101,9 @@ export class WriteComponent implements OnInit {
       this.temp.blog = this.editorContent;
       this.temp.category = this.category;
       this.temp.view = this.view;
+      this.temp.uid  = this.authService.userData?.uid;
+      this.temp.displayName = this.authService.userData?.displayName;
+      this.temp.photoURL = this.authService.userData?.photoURL;
       this.Article=(this.temp)
       
       this.authService.createBlog(this.Article);

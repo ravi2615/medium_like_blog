@@ -52,7 +52,7 @@ export class AuthService {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.router.navigate(['write']);
-      this.SetUserData(result.user);
+      // this.SetUserData(result.user);
         this.toastr.success("Login Successfully",'',{
           timeOut:10000,
         })
@@ -128,21 +128,23 @@ export class AuthService {
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user) {
-    // console.log(user);
-    
+    // console.log(user);    
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
     }
-    
     // this.afs.collection('users').add(userData);
     return userRef.set(userData, {
       merge: true
     })
+  }
+
+  userProfile(){
+    return this.afs.collection('users').snapshotChanges();
   }
 
   // Sign out 
