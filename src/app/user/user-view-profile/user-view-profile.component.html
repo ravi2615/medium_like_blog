@@ -1,0 +1,22 @@
+<div class="container col-md-4 col-10 shadow p-3 mb-5 bg-white rounded" *ngFor="let user of userData">
+    <div class="row px-md-5 d-flex align-items-center justify-content-center">
+        <div class="d-flex flex-column align-items-center justify-content-center">
+            <img *ngIf="user.photoURL" src= "{{user.photoURL}}" class="shadow-sm p-2 mb-5 bg-white rounded">
+            <h6 *ngIf="user.facebookURL || user.instagramURL || user.linkedinURL || user.twitterURL || user.githubURL" class="text-center">Follow on :</h6>
+            <div class="social d-flex flex-row mb-5 align-items-center justify-content-center">
+                <a *ngIf="user.facebookURL" href="{{user.facebookURL}}"><img src= "https://img.icons8.com/color/256/000000/facebook-new.png"></a>
+                <a *ngIf="user.instagramURL" href="{{user.instagramURL}}"><img src= "https://img.icons8.com/fluent/256/000000/instagram-new.png"></a>
+                <a *ngIf="user.linkedinURL" href="{{user.linkedinURL}}"><img src= "https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"></a>
+                <a *ngIf="user.twitterURL" href="{{user.twitterURL}}"><img src= "https://img.icons8.com/color/256/000000/twitter--v1.png"></a>
+                <a *ngIf="user.githubURL" href="{{user.githubURL}}"><img src= "https://img.icons8.com/ios-glyphs/480/000000/github.png"></a>
+            </div>
+            <h3>{{user.displayName}}</h3>
+            <mat-icon class="text-secondary">format_quote</mat-icon><h6 class="text-center text-secondary">{{user.bio}}</h6>
+        </div>
+        </div>
+
+<div *ngIf="isLoading" class="row d-flex fixed justify-content-center loading"><mat-spinner></mat-spinner></div>
+</div>
+
+
+<h2 class="container text-center py-5" *ngIf="!isData">No Profile Data Found...</h2>

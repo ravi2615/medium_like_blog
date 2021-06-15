@@ -33,6 +33,7 @@ export class ArticleComponent implements OnInit {
           uid: e.payload.doc.data()['uid'],
           photoURL: e.payload.doc.data()['photoURL'],
           name: e.payload.doc.data()['displayName'],
+          userName: e.payload.doc.data()['userName'],
         }
       })
 

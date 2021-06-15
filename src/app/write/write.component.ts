@@ -84,9 +84,6 @@ export class WriteComponent implements OnInit {
     })
      // 
 
-    this.name = this.authService.userData?.displayName;
-    this.photoURL = this.authService.userData?.photoURL;
-
     this.isEmailVerified = this.authService.userData?.emailVerified != null || this.authService.userData?.emailVerified ? true : false;
 
   }
@@ -100,17 +97,22 @@ export class WriteComponent implements OnInit {
       this.temp.subtitle = this.subTitle;
       this.temp.blog = this.editorContent;
       this.temp.category = this.category;
-      this.temp.view = this.view;
-      this.temp.uid  = this.authService.userData?.uid;
-      this.temp.displayName = this.authService.userData?.displayName;
-      this.temp.photoURL = this.authService.userData?.photoURL;
+      this.temp.view = 'public';
+      this.temp.uid  = this.temp.uid;
+      this.temp.displayName = this.temp.displayName;
+      this.temp.photoURL = this.temp.photoURL;
       this.Article=(this.temp)
+      // console.log(this.Article);
       
       this.authService.createBlog(this.Article);
+      this.toastr.success(`Saved Successfully`, '',{
+        timeOut: 5000
+      })
       this.ngOnInit();
+      this.router.navigate(['user-blog'])
     }else {
       this.toastr.info(`Please Verify your email: ${this.authService.userData?.email} first`, '',{
-        timeOut: 10000
+        timeOut: 5000
       })
       this.router.navigate(['verify-email-address']);
     }
@@ -138,8 +140,9 @@ export class WriteComponent implements OnInit {
   onChangeCategory(e){
     this.category = e;
   }
-  onSelect(e){console.log(this.view)
+  onSelect(e){
+    // console.log(this.view)
     this.view = e.source.value != '' && e.source.value != null ? e.source.value : this.view;
-    console.log(this.view)
+    // console.log(this.view)
   }
 }

@@ -6,6 +6,7 @@ import "firebase/auth";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -51,10 +52,10 @@ export class AuthService {
   SignIn(email, password) {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.router.navigate(['write']);
+        this.router.navigate(['user-blog']);
       // this.SetUserData(result.user);
         this.toastr.success("Login Successfully",'',{
-          timeOut:10000,
+          timeOut:5000,
         })
       }).catch((error) => {
         // window.alert(error.message)
@@ -69,7 +70,7 @@ export class AuthService {
         up and returns promise */
         
         this.toastr.success("Register Successfully",'',{
-          timeOut:10000,
+          timeOut:5000,
         });
         this.SendVerificationMail();
         this.SetUserData(result.user);
@@ -86,13 +87,13 @@ export class AuthService {
       .then(() => {
         this.router.navigate(['verify-email-address']);
         this.toastr.success("We have sent a confirmation email","Please check your email and click on the link to verify your email address.",{
-          timeOut:10000,
+          timeOut:5000,
         })
       }).catch(error=>{
         // return error.message
         
         this.toastr.error(error.message,'Try again later',{
-          timeOut:10000,
+          timeOut:5000,
         })
       })
     })
@@ -105,13 +106,13 @@ export class AuthService {
         // window.alert('Password reset email sent, check your inbox.');
         
         this.toastr.success('Password reset email sent, check your inbox.','',{
-          timeOut:10000,
+          timeOut:5000,
         });
       }).catch((error) => {
-        window.alert(error)
+        // window.alert(error)
         
         this.toastr.error(error.message,'Try again later',{
-          timeOut:10000,
+          timeOut:5000,
         })
       })
     }
@@ -136,14 +137,29 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      facebookURL: user.facebookURL,
+      twitterURL: user.twitterURL,
+      githubURL: user.githubURL,
+      linkedinURL: user.linkedinURL,
+      instagramURL: user.instagramURL,
+      bio: user.bio
     }
-    // this.afs.collection('users').add(userData);
+    console.log(userData);
+    
+    this.afs.collection('users').add(userData);
     return userRef.set(userData, {
       merge: true
     })
   }
 
-  userProfile(){
+  updateUserData(userData){
+    this.afs.collection('users').doc(`${userData.uid}`).update(userData);
+    this.toastr.success(`Saved Successfully`, '',{
+      timeOut: 5000
+    })
+  }
+
+  userProfile() : Observable<any>{
     return this.afs.collection('users').snapshotChanges();
   }
 
@@ -159,16 +175,15 @@ export class AuthService {
   createBlog(article){
     let date = Date.now();
     const userBlogRef: AngularFirestoreDocument<any> = this.afs.doc(`blogs/${this.userData?.uid}/blog/${date}`);
-    this.createAllBlog(article);
-     return userBlogRef.set(article,{
+    this.createAllBlog(article, date);
+      userBlogRef.set(article,{
       merge: true
     })
   }
 
-  createAllBlog(article){
-    let date = Date.now();
+  createAllBlog(article, date){
     const AllBlogRef: AngularFirestoreDocument<any> = this.afs.doc(`all-blog/${date}`);
-     return AllBlogRef.set(article,{
+      AllBlogRef.set(article,{
       merge: true
     })
   }
@@ -179,6 +194,13 @@ export class AuthService {
   }
   getAllBlog(){
     return this.afs.collection('all-blog').snapshotChanges();
+  }
+
+  DeleteBlog(id, uid){
+    this.afs.collection(`blogs`).doc(`${uid}`).collection("blog").doc(`${id}`).delete();;
+  }
+  DeleteFromAllBlog(id, uid){
+   this.afs.collection(`all-blog`).doc(`${id}`).delete();;
   }
 
 }

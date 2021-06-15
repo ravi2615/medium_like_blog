@@ -24,7 +24,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { UserBlogComponent } from './user/user-blog/user-blog.component';
 import { SingleBlogComponent } from './single-blog/single-blog.component';
 import { BlogsComponent } from './shared/components/blogs.component';
-import { UserProfileComponent } from './user/user-profile/user-profile.component'
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { UserViewProfileComponent } from './user/user-view-profile/user-view-profile.component';
+import { ErrorComponent } from './error/error.component'
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { UserProfileComponent } from './user/user-profile/user-profile.component
     UserBlogComponent,
     SingleBlogComponent,
     BlogsComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserViewProfileComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

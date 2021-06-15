@@ -1,3 +1,5 @@
+import { ErrorComponent } from './error/error.component';
+import { UserViewProfileComponent } from './user/user-view-profile/user-view-profile.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { SingleBlogComponent } from './single-blog/single-blog.component';
 import { UserBlogComponent } from './user/user-blog/user-blog.component';
@@ -21,7 +23,8 @@ const routes: Routes = [
   { path: 'user-blog', component: UserBlogComponent, canActivate:[AuthGuard]},
   { path: 'my-profile/:id', component: UserProfileComponent, canActivate:[AuthGuard],},
   { path: 'single-blog/:id', component: SingleBlogComponent},
-  { path: '**', redirectTo:'blog'}
+  { path: 'user-view-profile/:id', component: UserViewProfileComponent},
+  { path: '**', component: ErrorComponent}
 ];
 
 @NgModule({

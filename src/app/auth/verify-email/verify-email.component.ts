@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class VerifyEmailComponent implements OnInit {
 
   userEmail;
+  resend=true;
   constructor( private authService: AuthService, private router: Router, private afauth: AngularFireAuth) { }
 
   ngOnInit(): void {
@@ -23,14 +24,17 @@ export class VerifyEmailComponent implements OnInit {
       if(user.emailVerified)
       this.router.navigate([''])
     }})
+    this.resend =true
 
   }
 
   resendVerificationMail(){
     this.authService.SendVerificationMail();
+    this.resend=false;
     // this.router.navigate(['login'])
     // this.msg= "Please check your email and click on the link to verify your email address.";
     
+
   }
 
 }

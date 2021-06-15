@@ -30,6 +30,7 @@ export class UserBlogComponent implements OnInit {
           photoURL: e.payload.doc.data()['photoURL'],
           uid: e.payload.doc.data()['uid'],
           name: e.payload.doc.data()['displayName'],
+          dlt: true
         }
       })
 

@@ -4,12 +4,13 @@
     <input matInput class="my-3 shadow-sm p-3 mb-5 bg-white rounded" type="text" name="article" [(ngModel)] ='article' 
        (ngModelChange)="search($event)" placeholder="Search by category or title" >
   
-  <div *ngFor="let article of blogs; index as i" class="shadow px-3 m-1 mb-5 bg-white rounded" style="cursor: pointer !important;">
+  <div *ngFor="let article of blogs; index as i" class="shadow px-3 m-1 mb-5 bg-white rounded">
     <div class="m-3">
-    <img src="{{article.photoURL}}">
-    <span class="px-1">{{article.name}}</span>
+    <img src="{{article.photoURL}}" aria-label="profile-pic" alt="profile-pic">
+    <span class="px-1 view_pro" (click)="userViewProfile(article.uid)">{{article.name}}</span>
+    <span *ngIf="article.dlt" id="delete" class="m-2 float-end" (click)= "deleteBlog(article._id, article.uid)"><button mat-mini-fab color="warn"><mat-icon>delete_forever</mat-icon></button></span>
   </div>
-      <div class="row d-flex align-items-center justify-content-center col-md-12" (click)="singleRoute(article._id)">
+      <div class="row d-flex align-items-center justify-content-center col-md-12" (click)="singleRoute(article._id)"  style="cursor: pointer !important;">
         <h1 class="text-center" [innerHTML]="article.title" 
         style=
         "font-size:18px; 
@@ -28,6 +29,19 @@
         </div>
         </div>
     </div>
+    <div class="share p-2">
+      <div id="share-one">
+        <h6>Share via : </h6>
+        <a id= "fb" mat-button (click)="fbShare(article._id)"><img src="https://img.icons8.com/color/256/000000/facebook-new.png"></a>
+        <a id= "linkedIn" mat-button (click)="linkedInShare(article._id, article.title)"><img src="https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"></a>
+        <!-- <a id= "email" mat-button (click)="emailShare(article._id, article.title)"><img src="https://cdn.worldvectorlogo.com/logos/gmail-icon.svg"></a> -->
+        <a id= "whatsapp" mat-button (click)="whatsappShare(article._id, article.title)"><img src="https://img.icons8.com/color/512/000000/whatsapp--v1.png"/></a>
+        <a id= "twitter" mat-button (click)="twitterShare(article._id, article.title)"><img src="https://img.icons8.com/color/64/000000/twitter--v1.png"/></a>
+       </div> 
+       <a id= "shareAll" mat-mini-fab color="primary" (click) ="share(article._id, article.title)" ><mat-icon>share</mat-icon></a>
+       
+    </div>
+    
   </div>
   
   <div *ngIf="isLoading" class="row d-flex fixed justify-content-center loading"><mat-spinner></mat-spinner></div>

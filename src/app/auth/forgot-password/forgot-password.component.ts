@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordComponent implements OnInit {
 
+  errorMsg:string;
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {

@@ -13,15 +13,16 @@
           <div class="form-group">
             <label for="editor"><h3>Description</h3></label>
             <div class=" bg-light">
-              <quill-editor [styles]="editorStyle" [modules]="config" (ngModelChange)="onChange($event)" (onContentChanged)="maxLength($event)" formControlName="editor"></quill-editor>
+              <quill-editor [styles]="editorStyle" [modules]="config" (ngModelChange)="onChange($event)" (onContentChanged)="maxLength($event)" formControlName="editor">
+              </quill-editor>
               <span *ngIf="editorForm.get('editor').value != null">{{ 1000000 - editorForm.get('editor').value.length }}</span>
             </div>
           </div>
           <mat-form-field floatLabel='never' class="category">
             <input matInput formControlName="category"  placeholder="category" (ngModelChange)="onChangeCategory($event)"  required>
            </mat-form-field>
-           <mat-radio-button class="ml-2" (change)="onSelect($event)" value="public"> Public</mat-radio-button>
-           <mat-radio-button class="ml-2" (change)="onSelect($event)" value="private"> Private</mat-radio-button><br>
+           <!-- <mat-radio-button class="ml-2" (change)="onSelect($event)" value="public"> Public</mat-radio-button>
+           <mat-radio-button class="ml-2" (change)="onSelect($event)" value="private"> Private</mat-radio-button><br> -->
           <button class="btn btn-primary mt-5" [disabled]="!editorForm.valid">Submit</button>
         </form>
       </div>

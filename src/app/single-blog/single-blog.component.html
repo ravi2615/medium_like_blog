@@ -2,8 +2,8 @@
 <div  *ngFor="let article of articles; index as i">
     <div class=" row d-flex align-items-center justify-content-center col-md-12 p-md-5 p-1">
       <div class="m-3">
-        <img src="{{article.photoURL}}">
-        <span class="px-1">{{article.name}}</span>
+        <img src="{{article.photoURL}}" aria-label="profile-pic" alt="profile-pic">
+        <span class="px-1 view_pro" (click)="userViewProfile(article.uid)">{{article.name}}</span>
       </div>
       <h1 class="text-center" [innerHTML]="article.title" 
       style=
@@ -15,6 +15,17 @@
       font-weight: normal;
       color: rgb(92, 92, 92);
       text-indent:10px">-{{article.subtitle}}</h4>
+      
+    <div class="share p-2 d-flex flex-row justify-content-around">
+      <div id="share-one">
+        <a id= "fb" mat-button (click)="fbShare(article._id)"><img src="https://img.icons8.com/color/256/000000/facebook-new.png"></a>
+        <a id= "linkedIn" mat-button (click)="linkedInShare(article._id, article.title)"><img src="https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"></a>
+        <!-- <a id= "email" mat-button (click)="emailShare(article._id, article.title)"><img src="https://cdn.worldvectorlogo.com/logos/gmail-icon.svg"></a> -->
+        <a id= "whatsapp" mat-button (click)="whatsappShare(article._id, article.title)"><img src="https://img.icons8.com/color/512/000000/whatsapp--v1.png"/></a>
+        <a id= "twitter" mat-button (click)="twitterShare(article._id, article.title)"><img src="https://img.icons8.com/color/64/000000/twitter--v1.png"/></a>
+       </div> 
+       <a id= "shareAll" mat-mini-fab color="primary" (click) ="share(article._id, article.title)" ><mat-icon>share</mat-icon></a>
+    </div>
     <div class="ql-container ql-snow" 
     style= "border-width: 0;">
       <div style="width: 100%" class="ql-editor bg-light p-md-5 p-1" *ngIf="article!=null" [innerHTML]="article.blog | safe: 'html'" >

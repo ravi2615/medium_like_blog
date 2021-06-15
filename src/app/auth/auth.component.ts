@@ -29,7 +29,6 @@ export class AuthComponent implements OnInit {
       if(this.loginMode){
         this.authService.SignIn(this.Form.value.email,this.Form.value.password).then(res=>{
           // console.log(res);
-          this.router.navigate([''])
           this.errorMsg=res;
         })
       }

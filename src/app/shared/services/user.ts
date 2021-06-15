@@ -4,4 +4,10 @@ export interface User {
     displayName : string;
     photoURL : string;
     emailVerified : boolean;
+    facebookURL: string;
+    twitterURL: string;
+    githubURL: string;
+    linkedinURL:string;
+    instagramURL: string;
+    bio:string;
  }

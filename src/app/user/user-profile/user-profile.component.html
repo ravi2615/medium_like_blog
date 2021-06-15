@@ -1,21 +1,63 @@
 <div class="container col-md-4 col-10 shadow p-3 mb-5 bg-white rounded">
     <form class="row form px-md-5 d-flex align-items-center justify-content-center" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <img *ngIf="userData.photoURL" src= "{{userData.photoURL}}" class="shadow-sm p-2 mb-5 bg-white rounded">
+        <div class="social d-flex flex-row align-items-center justify-content-center">
+            <a *ngIf="userData.facebookURL" href="{{userData.facebookURL}}"><img src= "https://img.icons8.com/color/256/000000/facebook-new.png"></a>
+            <a *ngIf="userData.instagramURL" href="{{userData.instagramURL}}"><img src= "https://img.icons8.com/fluent/256/000000/instagram-new.png"></a>
+            <a *ngIf="userData.linkedinURL" href="{{userData.linkedinURL}}"><img src= "https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"></a>
+            <a *ngIf="userData.twitterURL" href="{{userData.twitterURL}}"><img src= "https://img.icons8.com/color/256/000000/twitter--v1.png"></a>
+            <a *ngIf="userData.githubURL" href="{{userData.githubURL}}"><img src= "https://img.icons8.com/ios-glyphs/480/000000/github.png"></a>
+        </div>
     <div>
         <mat-form-field floatLabel='never'>
             <mat-label> Full Name </mat-label>
-            <input matInput formControlName="displayName" [value]="!!userData.displayName? userData.displayName :'Name'"  required>
+            <input matInput formControlName="displayName" [value]="userData.displayName"  >
         </mat-form-field>
         <mat-form-field floatLabel='never'>
             <mat-label> Profile pic url </mat-label>
-            <input matInput  formControlName="photoURL" [value]="!!userData.photoURL ? userData.photoURL : 'Photo URL'" required>
+            <input matInput  formControlName="photoURL" [value]="userData.photoURL" >
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Bio </mat-label>
+            <textarea matInput  formControlName="bio" [value]="userData.bio" ></textarea>
         </mat-form-field>
         <mat-form-field floatLabel='never'>
             <mat-label> Email </mat-label>
-            <input matInput disabled="true" [value]="!!userData.email ? userData.email : 'Email'" required>
+            <input matInput disabled="true" [value]="userData.email" >
         </mat-form-field>
+        <h6>Social :</h6>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Facebook Url :  </mat-label>
+            <input matInput  formControlName="facebookURL" [value]="!!userData.facebookURL ? userData.facebookURL: '' " >
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Instagram Url :  </mat-label>
+            <input matInput  formControlName="instagramURL" [value]="!!userData.instagramURL  ? userData.instagramURL: '' " >
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> LinkedIn Url :  </mat-label>
+            <input matInput  formControlName="linkedinURL" [value]="!!userData.linkedinURL  ? userData.linkedinURL: '' " >
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> Twitter Url :  </mat-label>
+            <input matInput  formControlName="twitterURL" [value]="!!userData.twitterURL  ? userData.twitterURL: '' " >
+        </mat-form-field>
+        <mat-form-field floatLabel='never'>
+            <mat-label> github Url :  </mat-label>
+            <input matInput  formControlName="githubURL" [value]="!!userData.githubURL  ? userData.githubURL: '' " >
+        </mat-form-field>
+            <h5 class="m-1">Email Status : </h5>
+            <div class="formGroup d-flex flex-row" *ngIf="!userData.emailVerified"> 
+                <h6 class="text-danger m-1">Not Verified : </h6>
+                <button type="button" mat-raised-button color="primary" (click)="resendVerificationMail()">
+                Resend Verification
+                </button>
+            </div>
+            <div class="formGroup d-flex flex-row" *ngIf="userData.emailVerified"> 
+                <mat-icon class="text-success">check</mat-icon><span class="text-success" > <h6 class="text-success">Verified</h6> </span> 
+            </div>
         <div class=" d-flex flex-row m-1">
-            <button mat-raised-button type="submit" class="m-1" color="primary" [disabled]="!profileForm.valid">Save</button>
+            <button mat-raised-button type="submit" class="m-1" color="primary" [disabled]="!profileForm.valid || !userData.email">Save</button>
         </div>
     </div>
 </form>

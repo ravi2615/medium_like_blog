@@ -3,3 +3,28 @@ img{
     height: 50px;
     border-radius: 50%;
 }
+
+#share-one a img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+#share-one{
+    display: none !important;
+}
+#shareAll{
+    display: block !important;
+}
+.view_pro{
+    cursor: pointer !important;
+}
+@media screen and (min-width:992px) {
+
+    #share-one{
+        display: block !important;
+    }
+    #shareAll{
+        display: none !important;
+    }
+    
+}
