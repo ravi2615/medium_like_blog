@@ -48,7 +48,7 @@ ngOnInit(): void {
   
 }
 userViewProfile(uid){
-  this.router.navigate([`user-view-profile/${uid}`])
+  this.router.navigate([`user-view-profile`,uid])
 }
 
 fbShare(id){

@@ -1,10 +1,12 @@
+<div class="container py-5" *ngIf="isData">
+  <app-blogs [blogs]="articles" [articles]="articles"></app-blogs>
 
-<div class="container py-5"*ngIf="isData">
-
-  <app-blogs [blogs]="articles"></app-blogs>
-
-<div *ngIf="isLoading" class="row d-flex fixed justify-content-center loading"><mat-spinner></mat-spinner></div>
+  <div
+    *ngIf="isLoading"
+    class="row d-flex fixed justify-content-center loading"
+  >
+    <mat-spinner></mat-spinner>
+  </div>
 </div>
 
 <h2 class="container text-center py-5" *ngIf="!isData">No Blog...</h2>
-

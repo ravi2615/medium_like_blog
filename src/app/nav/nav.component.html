@@ -1,31 +1,49 @@
 <ul class="nav nav-tabs shadow-sm p-3 mb-5 bg-white rounded">
-    <li class="nav-item">
-      <a class="nav-link" aria-current="page"routerLink="">All Article</a>
-    </li>
-    <span class="spacer"></span>
-     <!-- <li class="nav-item" *ngIf="authService.isLoggedIn">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" routerLink="">All Article</a>
+  </li>
+  <span class="spacer"></span>
+  <!-- <li class="nav-item" *ngIf="authService.isLoggedIn">
       <a class="nav-link" routerLink="user-blog">My Article</a>
     </li>
     <li class="nav-item" *ngIf="authService.isLoggedIn">
       <a class="nav-link"routerLink="write">Write Article</a>
     </li> -->
-    <li class="nav-item" *ngIf="!authService.isLoggedIn; else elseBlock">
-      <a class="nav-link"routerLink="login">Login</a>
-    </li>
-    <!-- <li class="nav-item" *ngIf="authService.isLoggedIn">
+  <li class="nav-item" *ngIf="!authService.isLoggedIn; else elseBlock">
+    <a class="nav-link" routerLink="login">Login</a>
+  </li>
+  <!-- <li class="nav-item" *ngIf="authService.isLoggedIn">
       <a class="nav-link" (click)="signOut()" style="cursor: pointer;">Logout</a>
     </li>  -->
 
-    <ng-template class="d-flex flex-row-reverse" #elseBlock>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>person_outline</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        
-      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="my-profile/{{uid}}">My Profile</a>
-      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="user-blog">My Article</a>
-      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="write">Write Article</a>
-      <a class="nav-link" *ngIf="authService.isLoggedIn" (click)="signOut()" style="cursor: pointer;">Logout</a>
-      </mat-menu>
-    </ng-template>
-  </ul>
+  <ng-template class="d-flex flex-row-reverse" #elseBlock>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu"
+    >
+      <mat-icon>person_outline</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <a
+        class="nav-link"
+        *ngIf="authService.isLoggedIn"
+        routerLink="user-view-profile/{{uid}}"
+        >My Profile</a
+      >
+      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="user-blog/{{uid}}"
+        >My Article</a
+      >
+      <a class="nav-link" *ngIf="authService.isLoggedIn" routerLink="write"
+        >Write Article</a
+      >
+      <a
+        class="nav-link"
+        *ngIf="authService.isLoggedIn"
+        (click)="signOut()"
+        style="cursor: pointer"
+        >Logout</a
+      >
+    </mat-menu>
+  </ng-template>
+</ul>

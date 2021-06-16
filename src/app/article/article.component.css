@@ -1,5 +1,3 @@
-
-
 /* .loading{
     align-items: center !important;
     justify-content: center;
@@ -11,9 +9,8 @@
     stroke: #fff !important;
 } */
 
-@media screen and (min-width:992px) {
-    .container {
-        padding: 0 200px;
-    }
-    
+@media screen and (min-width: 992px) {
+  .container {
+    padding: 0 200px;
+  }
 }

@@ -6,10 +6,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
-import {MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatInputModule} from '@angular/material/input';
-import { MatTabsModule} from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,12 +30,11 @@ const matrial = [
   MatProgressSpinnerModule,
   MatBadgeModule,
   MatCheckboxModule,
-  MatRadioModule
-]
+  MatRadioModule,
+];
 
 @NgModule({
-  imports: [matrial]
-,
-  exports: [matrial]
+  imports: [matrial],
+  exports: [matrial],
 })
-export class MaterialModule { }
+export class MaterialModule {}

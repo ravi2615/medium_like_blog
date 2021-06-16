@@ -20,10 +20,10 @@ const routes: Routes = [
   { path: 'login', component: AuthComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verify-email-address', component: VerifyEmailComponent, canActivate:[AuthGuard] },
-  { path: 'user-blog', component: UserBlogComponent, canActivate:[AuthGuard]},
-  { path: 'my-profile/:id', component: UserProfileComponent, canActivate:[AuthGuard],},
+  { path: 'user-blog/:id', component: UserBlogComponent, canActivate:[AuthGuard]},
+  { path: 'user-view-profile/:id', component: UserProfileComponent, },
   { path: 'single-blog/:id', component: SingleBlogComponent},
-  { path: 'user-view-profile/:id', component: UserViewProfileComponent},
+  // { path: 'user-view-profile/:id', component: UserViewProfileComponent},
   { path: '**', component: ErrorComponent}
 ];
 

@@ -6,4 +6,4 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Live Demo
 [Medium_like_blog](https://myblog-b702f.web.app/#/blog)
 
-![Medium_like_blog](https://user-images.githubusercontent.com/67025166/121815501-aba04700-cc2b-11eb-97ca-0edd9bd8f260.png)
+(![Medium_blog](https://user-images.githubusercontent.com/67025166/121963884-91e02c00-cd1f-11eb-98d1-cee0671bb706.png))
