@@ -15,6 +15,7 @@ export class UserProfileComponent implements OnInit {
   profileForm: FormGroup;
   paramId;
   articles = [];
+  blogs=[];
   t = [];
   userData = {
     uid: '',
@@ -104,26 +105,16 @@ export class UserProfileComponent implements OnInit {
   onEdit() {
     this.afu.authState.subscribe((user) => {
       // console.log( user.uid);
-      if (user) {
-        if (user.uid == this.userData.uid) {
-          this.edit = !this.edit;
-          this.ngOnInit();
-        } else {
-          this.router.navigate(['error']);
-          this.toastr.error(
-            `Permission Denied`,
-            'Sorry! You are not permitted',
-            {
-              timeOut: 5000,
-            }
-          );
-        }
+      if(user){
+      if (user.uid == this.userData.uid) {
+        this.edit = !this.edit;
+        this.ngOnInit();
       } else {
         this.router.navigate(['error']);
         this.toastr.error(`Permission Denied`, 'Sorry! You are not permitted', {
           timeOut: 5000,
         });
-      }
+      }}
     });
     // this.edit = !this.edit;
     // console.log( this.userData.uid);
@@ -181,15 +172,22 @@ export class UserProfileComponent implements OnInit {
   postView(uid) {
     // console.log(uid);
     this.isLoading = true;
-    // this.postview= !this.postview
-    // if(this.postview)
-    // {
-    this.authService.getAllBlog().subscribe((res) => {
+    this.authService.getPreviewBlog().then((res) => res.subscribe(res=>{
       // console.log(res);
       this.t = res.map((e) => {
-        return e.payload.doc.data();
-        // console.log(e.payload.doc.data()['uid'].slice(1),"ggfhg" , uid.charAt(0),"hgfghdf");
-        // if (e.payload.doc.data()['view'] == 'public')
+        return {
+          _id: e.payload.doc.id,
+          title: e.payload.doc.data()['title'],
+          subtitle: e.payload.doc.data()['subtitle'],
+          blog: e.payload.doc.data()['blog'],
+          category: e.payload.doc.data()['category'],
+          uid: e.payload.doc.data()['uid'],
+          photoURL: e.payload.doc.data()['photoURL'],
+          name: e.payload.doc.data()['displayName'],
+          likeCount: e.payload.doc.data()['likeCount'],
+          created_time : e.payload.doc.data()['created_time'],
+          dlt:false
+        };
       });
 
       this.articles = Object(this.t).filter((res) => {
@@ -197,9 +195,12 @@ export class UserProfileComponent implements OnInit {
         if (res.uid.charAt(0) == ' ') res.uid = res.uid.slice(1);
 
         return res.uid.match(uid);
-      });
-    });
-    // }
+      })
+
+      this.blogs = this.articles.slice(0,10) ;
+      // console.log(this.articles);
+      
+    }));
     // console.log(this.articles)
     this.isLoading = false;
   }

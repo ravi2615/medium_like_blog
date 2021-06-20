@@ -1,4 +1,5 @@
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,17 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArticleComponent implements OnInit {
   articles: any;
+  blogs:any;
   article = '';
   isLoading = false;
   isData = true;
   name;
-  constructor(private authService: AuthService, private router: Router) {}
+  articlesSize = 0;
+  categories;
+  blogList:Observable<any>
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {
+
+  }
 
   ngOnInit(): void {
     // this.articles= (JSON.parse(localStorage.getItem('blog')));
-
+this.authService.getPreviewBlog().then(res=>{
+  console.log(res);
+  
+})
     this.isLoading = true;
-    this.authService.getAllBlog().subscribe((res) => {
+    this.authService.getPreviewBlog().then(res=>res.subscribe((res) => {
       // console.log(res);
       this.articles = res.map((e) => {
         // console.log(e.payload.doc.data());
@@ -33,12 +43,40 @@ export class ArticleComponent implements OnInit {
             uid: e.payload.doc.data()['uid'],
             photoURL: e.payload.doc.data()['photoURL'],
             name: e.payload.doc.data()['displayName'],
-            dlt:false
+            likeCount: e.payload.doc.data()['likeCount'],
+            created_time : e.payload.doc.data()['created_time'],
+            dlt:false,
+            
           };
+         
       });
       this.isLoading = false; // console.log(this.articles.length);
-      if (!this.articles.length) this.isData = false;
-    });
+      if (!this.articles.length) 
+      this.isData = false 
+      else 
+      this.articlesSize = this.articles.length;
+      this.blogs = this.articles.slice(0,10) 
+      
+    }));
+    
+
+  }
+  
+  Like(id) {
+       this.authService.getUserLikes().then(res=>res.subscribe(res=>{
+        if(res){
+          res.map(res=>{
+            if(res.payload.doc.data()['id'] == id){
+              console.log(true);
+            return true;
+          }
+          })
+        }
+        else {
+          console.log(false);
+          
+          return false}
+      }))
   }
 
 //   singleRoute(id) {

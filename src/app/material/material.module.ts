@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const matrial = [
   MatButtonModule,
@@ -31,6 +32,7 @@ const matrial = [
   MatBadgeModule,
   MatCheckboxModule,
   MatRadioModule,
+  MatPaginatorModule,
 ];
 
 @NgModule({

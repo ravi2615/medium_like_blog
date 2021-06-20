@@ -7,14 +7,11 @@
     name="article"
     [(ngModel)]="article"
     (ngModelChange)="search($event)"
-    placeholder="Search by category or title or author"
+    placeholder="Search by category or title"
   />
-
-  <div
-    *ngFor="let article of blogs; index as i"
-    class="shadow px-3 m-1 mb-5 bg-white rounded"
-  >
-    <!-- <div *ngIf="article != undefined"> -->
+  <div class="row shadow-sm p-0 px-md-2 mb-md-5 rounded">
+    <div *ngFor="let article of blogs; index as i" class="bg-white mt-1">
+      <!-- <div *ngIf="article != undefined"> -->
       <div class="m-3">
         <img
           src="{{ article.photoURL }}"
@@ -23,93 +20,74 @@
         />
         <span class="px-1 view_pro" (click)="userViewProfile(article.uid)">{{
           article.name
-        }}</span>
-        <span
-          *ngIf="article.dlt"
-          id="delete"
-          class="m-2 float-end"
-          (click)="deleteBlog(article._id, article.uid)"
-          ><button mat-mini-fab color="warn">
-            <mat-icon>delete_forever</mat-icon>
-          </button></span
-        >
+        }}</span><span
+        *ngIf="article.edit"
+        id="edit"
+        class="float-end"
+        (click)="editBlog(article._id, article.uid)"
+        ><button mat-mini-fab color="white">
+          <mat-icon>edit</mat-icon>
+        </button></span><span
+        *ngIf="article.dlt"
+        id="delete"
+        class="float-end"
+        (click)="deleteBlog(article._id, article.uid)"
+        ><button mat-mini-fab color="warn">
+          <mat-icon>delete_forever</mat-icon>
+        </button></span
+      ><br>
+        <span class="px-1 text-secondary" style="font-size: 14px;">{{article.created_time | date: 'mediumDate' }}</span>
+        
       </div>
-      <div
-        class="row d-flex align-items-center justify-content-center col-md-12"
-        (click)="singleRoute(article._id)"
-        style="cursor: pointer !important"
-      >
+      <div class="row" (click)="singleRoute(article._id)" style="cursor: pointer !important;">
         <h1
-          class="text-center"
+          class="text-capitalize"
           [innerHTML]="article.title"
-          style="font-size: 18px; font-weight: bold"
+          style=" font-weight: bold"
         ></h1>
         <h4
-          class="text-center mb-5"
-          style="
-            font-size: 15px;
-            font-weight: normal;
-            color: rgb(92, 92, 92);
-            text-indent: 10px;
-          "
+          class="text-capitalize"
+          style=" font-weight: normal; color: rgb(92, 92, 92)"
         >
-          {{ "-" + article.subtitle }}
+          {{ article.subtitle }}
         </h4>
-        <div
-          class="ql-container ql-snow"
-          style="
-            border-width: 0;
-            max-height: 200px !important;
-            overflow: hidden;
-          "
-        >
+
+        <div style="border-width: 0; ">
           <div
             style="width: 100%"
-            class="ql-editor bg-light p-md-5 p-1"
+            class="blog"
             *ngIf="article != null"
             [innerHTML]="article.blog | safe: 'html'"
           ></div>
         </div>
       </div>
-      <div class="share p-2">
-        <div id="share-one">
-          <h6>Share via :</h6>
-          <a id="fb" mat-button (click)="fbShare(article._id)"
-            ><img
-              src="https://img.icons8.com/color/256/000000/facebook-new.png"
-          /></a>
-          <a
-            id="linkedIn"
-            mat-button
-            (click)="linkedInShare(article._id, article.title)"
-            ><img
-              src="https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"
-          /></a>
-          <!-- <a id= "email" mat-button (click)="emailShare(article._id, article.title)"><img src="https://cdn.worldvectorlogo.com/logos/gmail-icon.svg"></a> -->
-          <a
-            id="whatsapp"
-            mat-button
-            (click)="whatsappShare(article._id, article.title)"
-            ><img
-              src="https://img.icons8.com/color/512/000000/whatsapp--v1.png"
-          /></a>
-          <a
-            id="twitter"
-            mat-button
-            (click)="twitterShare(article._id, article.title)"
-            ><img src="https://img.icons8.com/color/64/000000/twitter--v1.png"
-          /></a>
-        </div>
+      <div class="d-flex flex-row justify-content-between">
         <a
-          id="shareAll"
-          mat-mini-fab
-          color="primary"
-          (click)="share(article._id, article.title)"
-          ><mat-icon>share</mat-icon></a
+          (click)="singleRoute(article._id)"
+          class="mt-2"
+          style="font-size: 18px; text-decoration: none; cursor: pointer"
+          >Read More</a
+        >{{article.isLike}}
+        <button
+          mat-icon-button
+          color="white"
+          (click)="isLike = !isLike; LikeUpdate(article._id, article.likeCount)"
         >
+          <mat-icon *ngIf="article.isLike">favorite</mat-icon>
+          <mat-icon *ngIf="!article.isLike" >favorite_border</mat-icon>
+          <span>{{ article.likeCount }}</span>
+        </button>
       </div>
+      <hr />
     </div>
-  <!-- </div> -->
+    <mat-paginator
+      class="float-end"
+      [length]="this.blogsSize"
+      [pageSize]="10"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
 
   <div
     *ngIf="isLoading"

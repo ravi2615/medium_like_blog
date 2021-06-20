@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import firebase from 'firebase/app';
@@ -15,7 +16,8 @@ export class NavComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -32,5 +34,8 @@ export class NavComponent implements OnInit {
   signOut() {
     this.authService.SignOut();
     this.router.navigate(['']);
+    this.toastr.success(`Signout Successfull`, '', {
+      timeOut: 5000,
+    });
   }
 }

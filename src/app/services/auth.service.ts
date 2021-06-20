@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   userData: any;
   isLogged = false;
+
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -149,15 +150,15 @@ export class AuthService {
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName? user.displayName  : null,
-      photoURL: user.photoURL? user.photoURL  : null,
-      emailVerified: user.emailVerified? user.emailVerified  : false,
-      facebookURL: user.facebookURL? user.facebookURL  : null,
-      twitterURL: user.twitterURL? user.twitterURL  : null,
-      githubURL: user.githubURL? user.githubURL  : null,
-      linkedinURL: user.linkedinURL? user.linkedinURL  : null,
-      instagramURL: user.instagramURL? user.instagramURL  : null,
-      bio: user.bio? user.bio  : null,
+      displayName: user.displayName ? user.displayName : null,
+      photoURL: user.photoURL ? user.photoURL : null,
+      emailVerified: user.emailVerified ? user.emailVerified : false,
+      facebookURL: user.facebookURL ? user.facebookURL : null,
+      twitterURL: user.twitterURL ? user.twitterURL : null,
+      githubURL: user.githubURL ? user.githubURL : null,
+      linkedinURL: user.linkedinURL ? user.linkedinURL : null,
+      instagramURL: user.instagramURL ? user.instagramURL : null,
+      bio: user.bio ? user.bio : null,
     };
     console.log(userData);
 
@@ -185,17 +186,38 @@ export class AuthService {
     });
   }
 
-  createBlog(article) {
+  createBlog(article, previewContent, category) {
     let date = Date.now();
     const userBlogRef: AngularFirestoreDocument<any> = this.afs.doc(
       `blogs/${this.userData?.uid}/blog/${date}`
     );
     this.createAllBlog(article, date);
+    this.createPreview(previewContent, date);
     userBlogRef.set(article, {
       merge: true,
     });
+    // this.CreateCategory(category);
   }
 
+  // CreateCategory(category){
+  //   // console.log(category);
+    
+  //   const categoryRef: AngularFirestoreDocument<any> = this.afs.doc(
+  //     `categories/category`
+  //   );
+  //   categoryRef.set(Object.assign({}, category), {
+  //     merge: true,
+  //   });
+  // }
+
+  createPreview(previewContent, date) {
+    const userBlogRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `preview/${date}`
+    );
+    userBlogRef.set(previewContent, {
+      merge: true,
+    });
+  }
   createAllBlog(article, date) {
     const AllBlogRef: AngularFirestoreDocument<any> = this.afs.doc(
       `all-blog/${date}`
@@ -205,13 +227,101 @@ export class AuthService {
     });
   }
 
-  getUserBlog() {
+  LikeUpdate(id, likeCount) {
+    // if (inc) {
+    //   likeCount = likeCount + 1;
+    // } else {
+    //   likeCount = likeCount - 1;
+    // }
+
     let uid = JSON.parse(localStorage.getItem('user'));
-    return this.afs.collection(`blogs/${uid}/blog`).snapshotChanges();
+    if (uid != null)
+      this.afs
+        .collection(`userLikes/${uid}/likes/`, (ref) =>
+          ref.where('id', '==', id)
+        )
+        .get()
+        .subscribe((user) => {
+          // console.log(user.docs.length);
+          if (!user.docs.length) {
+            const LikeRef: AngularFirestoreDocument<any> = this.afs.doc(
+              `userLikes/${uid}/likes/${id}`
+            );
+            const data = {
+              uid: uid,
+              id: id,
+              isLike: true,
+            };
+            LikeRef.set(data, {
+              merge: true,
+            });
+            this.afs.doc(`preview/${id}`).update({
+              likeCount: likeCount + 1,
+            });
+            this.afs.doc(`all-blog/${id}`).update({
+              likeCount: likeCount + 1,
+            });
+            this.afs.doc(`blogs/${uid}/blog/${id}`).update({
+              likeCount: likeCount + 1,
+            });
+          } else {
+            this.afs.collection(`userLikes/${uid}/likes`).doc(id).delete();
+            this.afs.doc(`preview/${id}`).update({
+              likeCount: likeCount - 1,
+            });
+            this.afs.doc(`all-blog/${id}`).update({
+              likeCount: likeCount - 1,
+            });
+            this.afs.doc(`blogs/${uid}/blog/${id}`).update({
+              likeCount: likeCount - 1,
+            });
+          }
+        });
   }
-  getAllBlog() {
-    return this.afs.collection('all-blog').snapshotChanges();
+
+  async getUserBlog() {
+    let uid = JSON.parse(localStorage.getItem('user'));
+    return await this.afs
+      .collection(`blogs/${uid}/blog`, (ref) =>
+        ref.orderBy('created_time', 'asc')
+      )
+      .snapshotChanges();
   }
+  async getAllBlog() {
+    return await this.afs
+      .collection('all-blog', (ref) => ref.orderBy('likeCount', 'desc'))
+      .snapshotChanges();
+  }
+
+  async getPreviewBlog() {
+    return await this.afs
+      .collection('preview', (ref) => ref.orderBy('likeCount', 'desc'))
+      .snapshotChanges();
+  }
+  async getUSerPreviewBlog() {
+    let uid = JSON.parse(localStorage.getItem('user'));
+    return await this.afs
+      .collection('preview', (ref) => ref.where('uid', '==', uid))
+      .snapshotChanges();
+  }
+
+  async getUserLikes() {
+    let uid = JSON.parse(localStorage.getItem('user'));
+
+    return await this.afs.collection(`userLikes/${uid}/likes`).snapshotChanges();
+  }
+
+  // getCategory(){
+  //   return this.afs.collection(`categories`).snapshotChanges()
+    // .subscribe(user=>{
+    //   console.log(user);
+    //   user.map(res=>{
+    //     console.log(res.payload.doc.data());
+        
+    //   })
+      
+    // });
+  // }
 
   DeleteBlog(id, uid) {
     this.afs
@@ -220,8 +330,34 @@ export class AuthService {
       .collection('blog')
       .doc(`${id}`)
       .delete();
+    this.DeleteFromAllBlog(id, uid);
+    this.DeltePreviewBlog(id, uid);
   }
   DeleteFromAllBlog(id, uid) {
     this.afs.collection(`all-blog`).doc(`${id}`).delete();
+  }
+  DeltePreviewBlog(id, uid) {
+    this.afs.collection(`preview`).doc(`${id}`).delete();
+  }
+
+  updateBlog(articles, preview, category){
+    this.afs.doc(`preview/${preview._id}`).update({
+      blog:preview.blog,
+      title:preview.title,
+      subtitle:preview.subtitle,
+      category:preview.category
+    })
+    this.afs.doc(`all-blog/${articles._id}`).update({
+      blog:articles.blog,
+      title:articles.title,
+      subtitle:articles.subtitle,
+      category:articles.category
+    })
+    this.afs.doc(`blogs/${articles.uid}/blog/${articles._id}`).update({
+      blog:articles.blog,
+      title:articles.title,
+      subtitle:articles.subtitle,
+      category:articles.category
+    })
   }
 }

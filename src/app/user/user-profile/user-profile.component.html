@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container py-2">
   <div class="d-flex align-items-center justify-content-center flex-column">
     <div class="col-md-6 col-12 shadow p-3 mb-5 bg-white rounded flex-column">
       <div *ngIf="!edit" class="float-end">
@@ -13,13 +13,15 @@
         }}
       </button>
     </div>
+    <div class="col-md-6 col-12">
+      <app-blogs
+        *ngIf=" articles.length && postview"
+        [blogs]="blogs"
+        [articles]="articles"
+        [blogsSize]="articles.length"
+      ></app-blogs>
+    </div>
   </div>
-
-  <app-blogs
-    *ngIf=" articles.length && postview"
-    [blogs]="articles"
-    [articles]="articles"
-  ></app-blogs>
 
   <div
     *ngIf="isLoading"
@@ -33,7 +35,7 @@
     [formGroup]="profileForm"
     (ngSubmit)="onSubmit()"
   >
-    <div class="col-md-6 col-10 shadow p-3 mb-5 bg-white rounded">
+    <div class="col-md-6 col-11 col-offset-1 shadow p-3 mb-5 bg-white rounded">
       <mat-form-field >
         <mat-label> Full Name : </mat-label>
         <input

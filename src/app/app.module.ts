@@ -27,6 +27,10 @@ import { BlogsComponent } from './shared/components/blogs.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { UserViewProfileComponent } from './user/user-view-profile/user-view-profile.component';
 import { ErrorComponent } from './error/error.component';
+import { CategoryComponent } from './category/category.component';
+import { EditComponent } from './edit/edit.component';
+import * as QuillNamespace from 'quill';
+let Quill: any = QuillNamespace;
 
 @NgModule({
   declarations: [
@@ -44,6 +48,8 @@ import { ErrorComponent } from './error/error.component';
     UserProfileComponent,
     UserViewProfileComponent,
     ErrorComponent,
+    CategoryComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,

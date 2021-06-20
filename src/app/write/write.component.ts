@@ -1,12 +1,13 @@
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import * as QuillNamespace from 'quill';
-let Quill: any = QuillNamespace;
-import ImageResize from 'quill-image-resize-module';
-Quill.register('modules/imageResize', ImageResize);
+// import * as Emoji from "quill-emoji";
+// // import Emoji from 'quill-emoji';
+// // Quill.register('modules/imageResize', ImageResize);
+// Quill.register("modules/emoji", Emoji);
 
 @Component({
   selector: 'app-write',
@@ -14,7 +15,8 @@ Quill.register('modules/imageResize', ImageResize);
   styleUrls: ['./write.component.css'],
 })
 export class WriteComponent implements OnInit {
-  editorContent = {};
+  previewContent;
+  editorContent = [];
   Article = {};
   editorForm: FormGroup;
   title;
@@ -31,9 +33,11 @@ export class WriteComponent implements OnInit {
     uid: '',
     photoURL: '',
     displayName: '',
+    created_time:null,
+    likeCount: 0,
   };
   editorStyle = {
-    height: '300px',
+    height: '500px',
     backgroundColor: '#fff',
   };
 
@@ -59,8 +63,10 @@ export class WriteComponent implements OnInit {
 
       ['link', 'image', 'video'], // link and image, video
     ],
-
-    imageResize: true,
+    syntax:true,
+    // "emoji-toolbar": true,
+    // "emoji-textarea": true,
+    // "emoji-shortname": true,
   };
 
   name;
@@ -68,7 +74,8 @@ export class WriteComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private afu : AngularFireAuth
   ) {}
 
   ngOnInit() {
@@ -96,11 +103,9 @@ export class WriteComponent implements OnInit {
     });
     //
 
-    this.isEmailVerified =
-      this.authService.userData?.emailVerified != null ||
-      this.authService.userData?.emailVerified
-        ? true
-        : false;
+    this.afu.authState.subscribe((user) => {
+      if (user) this.isEmailVerified = user.emailVerified;
+    });
   }
 
   onSubmit() {
@@ -116,15 +121,31 @@ export class WriteComponent implements OnInit {
         this.temp.uid = this.temp.uid;
         this.temp.displayName = this.temp.displayName;
         this.temp.photoURL = this.temp.photoURL;
+        this.temp.created_time = Date.now(),
+        this.temp.likeCount  = 0;
         this.Article = this.temp;
-        // console.log(this.Article);
+        // console.log(this.editorContent.slice(0,600) + "...",);
+        this.previewContent = {
+          blog: this.editorContent.slice(0,200) + "<span>...</span>",
+          view : 'public',
+          category : this.category,
+          title: this.title,
+          subtitle: this.subTitle,
+          uid: this.temp.uid,
+          photoURL: this.temp.photoURL,
+          displayName: this.temp.displayName,
+          created_time: this.temp.created_time,
+          likeCount: 0
+        } 
+        // console.log(this.previewContent);
+        
 
-        this.authService.createBlog(this.Article);
+        this.authService.createBlog(this.Article, this.previewContent, this.temp.category);
         this.toastr.success(`Saved Successfully`, '', {
           timeOut: 5000,
         });
         this.ngOnInit();
-        this.router.navigate(['user-blog']);
+        this.router.navigate(['user-blog/{{uid}}']);
       } else {
         this.router.navigate(['user-view-profile', 
         this.temp.uid]);this.toastr.info(`Update your name and photoURL`, 'Update your profile first', {

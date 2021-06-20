@@ -1,3 +1,4 @@
+import { EditComponent } from './edit/edit.component';
 import { ErrorComponent } from './error/error.component';
 import { UserViewProfileComponent } from './user/user-view-profile/user-view-profile.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
@@ -14,24 +15,31 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth.gaurd';
 
 const routes: Routes = [
-  { path:'', redirectTo:'blog', pathMatch:'full'},
+  { path: '', redirectTo: 'blog', pathMatch: 'full' },
   { path: 'blog', component: ArticleComponent },
-  { path: 'write', component: WriteComponent, canActivate:[AuthGuard],},
+  { path: 'write', component: WriteComponent, canActivate: [AuthGuard] },
+  { path: 'edit/:id', component: EditComponent, canActivate: [AuthGuard] },
   { path: 'login', component: AuthComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'verify-email-address', component: VerifyEmailComponent, canActivate:[AuthGuard] },
-  { path: 'user-blog/:id', component: UserBlogComponent, canActivate:[AuthGuard]},
-  { path: 'user-view-profile/:id', component: UserProfileComponent, },
-  { path: 'single-blog/:id', component: SingleBlogComponent},
+  {
+    path: 'verify-email-address',
+    component: VerifyEmailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user-blog/:id',
+    component: UserBlogComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'user-view-profile/:id', component: UserProfileComponent },
+  { path: 'single-blog/:id', component: SingleBlogComponent },
   // { path: 'user-view-profile/:id', component: UserViewProfileComponent},
-  { path: '**', component: ErrorComponent}
+  { path: '**', component: ErrorComponent },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes,{useHash: true})
-  ],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
-
+  providers: [],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

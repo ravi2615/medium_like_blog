@@ -9,11 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SingleBlogComponent implements OnInit {
 
-temp={_id:'', title:'', subtitle:'', blog:'', category:'', uid:'', photoURL:'', name:''};
+temp={_id:'', title:'', subtitle:'', blog:'', category:'', uid:'', photoURL:'', name:'', likeCount: 0, created_time:null};
 articles=[];
 paramId;
 isLoading=false
 isData=true;
+isLike = false
 constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) { }
 
 ngOnInit(): void {
@@ -25,7 +26,7 @@ ngOnInit(): void {
     })
     // console.log(this.paramId)
   this.isLoading = true;
-  this.authService.getAllBlog().subscribe(res=>{
+  this.authService.getAllBlog().then(res=>res.subscribe(res=>{
     // console.log(res);
      res.map(e=>{
       // console.log(e.payload.doc.data());
@@ -37,18 +38,29 @@ ngOnInit(): void {
        this.temp.category = e.payload.doc.data()['category'],
        this.temp.uid = e.payload.doc.data()['uid'],
        this.temp.photoURL = e.payload.doc.data()['photoURL'],
-       this.temp.name = e.payload.doc.data()['displayName']
+       this.temp.name = e.payload.doc.data()['displayName'],
+       this.temp.likeCount = e.payload.doc.data()['likeCount'],
+       this.temp.created_time = e.payload.doc.data()['created_time']
     }})
     this.articles.push(this.temp)
+    // console.log(this.articles);
     
     this.isLoading = false// console.log(this.articles.length);
     if(!this.articles.length)
     this.isData=false
-  })
+  }))
   
 }
 userViewProfile(uid){
   this.router.navigate([`user-view-profile`,uid])
+}
+
+LikeUpdate(id, likeCount,){
+  // if(this.isLike)
+  this.authService.LikeUpdate(id, likeCount );
+  // else{
+  //   this.authService.LikeUpdate(uid, id,likeCount,false );
+  // }
 }
 
 fbShare(id){

@@ -1,12 +1,29 @@
-<div class="container py-5" *ngIf="isData">
-  <app-blogs [blogs]="articles" [articles]="articles"></app-blogs>
+<div class="container-fluid d-flex flex-row" *ngIf="isData">
+
+  <div class="col-md-6 col-12">
+    <app-blogs [blogs]="blogs" [articles]="articles" [blogsSize] = "articlesSize"></app-blogs>
+  </div>
+  <div class="col-md-4 offset-md-2 d-none d-md-block my-5 float-end" style="position: fixed;right:0">
+    <div class="bg-light float-center p-5">
+      <!-- <h2>About</h2> -->
+      <h2 class="p-4 text-justify">Feel free to write. We provide a platform for you to share your project,
+          or any topic and connect with our readers   </h2>
+      <div class="about text-center">
+        <img class="about_img" src="https://ravishankar2615-portfolio.web.app/assets/intro1.jpeg">
+        <h6 class="text-secondary m-1">Created By</h6>
+        <h2 class="text-primary">Ravi Shankar</h2>
+      </div>
+    </div>
+  </div>
+
 
   <div
-    *ngIf="isLoading"
-    class="row d-flex fixed justify-content-center loading"
+  *ngIf="isLoading"
+  class=" row d-flex justify-content-center loading"
   >
-    <mat-spinner></mat-spinner>
+  <mat-spinner></mat-spinner>
   </div>
+  
 </div>
 
 <h2 class="container text-center py-5" *ngIf="!isData">No Blog...</h2>

@@ -1,4 +1,4 @@
-<div class="container p-md-5 p-3">
+<div class="container py-5">
   <div *ngIf="!isEmailVerified || !temp.photoURL || !temp.displayName" class="alert alert-warning" role="alert">
     <strong>Warning : </strong>Please update your profile first otherwise your data will not be saved
   </div>
@@ -20,7 +20,6 @@
             formControlName="subtitle"
             placeholder="Sub-title"
             (ngModelChange)="onChangeSubTitle($event)"
-            required
           />
         </mat-form-field>
         <div class="form-group">
@@ -34,11 +33,14 @@
               formControlName="editor"
             >
             </quill-editor>
-            <span *ngIf="editorForm.get('editor').value != null">{{
+            <!-- <span *ngIf="editorForm.get('editor').value != null">{{
               1000000 - editorForm.get("editor").value.length
-            }}</span>
+            }}</span> -->
           </div>
         </div>
+        <!-- <div class="alert alert-info" role="alert">
+          <strong> </strong> Category separated by comma "," e.g. : Firebase, Angular, etc.
+        </div> -->
         <mat-form-field floatLabel="never" class="category">
           <input
             matInput
@@ -56,44 +58,32 @@
       </form>
     </div>
 
-    <div
-      class="col-md-10"
-      *ngIf="editorContent != null || title != null || subTitle != null"
-    >
-      <h3>Preview</h3>
+    <div class="bg-white my-5" *ngIf="editorContent != null || title != null || subTitle != null">
+      <h3 class="m-md-5 m-1">Preview :</h3>
 
-      <div class="ql-container ql-snow my-5" style="border-width: 0">
-        <div class="m-3">
+      <!-- <div class="ql-container ql-snow my-5" style="border-width: 0"> -->
+
+      <h1 class="text-center" *ngIf="title != null" [innerHTML]="title"
+          style="font-size: 35px; font-weight: bold"></h1>
+      <h4 class="text-center mb-5" *ngIf="subTitle != null" style="
+        font-size: 18px;
+        font-weight: normal;
+        color: rgb(92, 92, 92);
+      ">
+          {{ subTitle }}
+      </h4>
+      <div class="m-3">
           <img *ngIf="temp.photoURL" src="{{ temp.photoURL }}" />
-          <span class="px-1">{{ temp.displayName }}</span>
-        </div>
-        <h1
-          class="text-center"
-          *ngIf="title != null"
-          [innerHTML]="title"
-          style="font-size: 35px; font-weight: bold"
-        ></h1>
-        <h4
-          class="text-center mb-5"
-          *ngIf="subTitle != null"
-          style="
-            font-size: 18px;
-            font-weight: normal;
-            color: rgb(92, 92, 92);
-            text-indent: 10px;
-          "
-        >
-          {{ "-" + subTitle }}
-        </h4>
-        <div class="ql-container ql-snow" style="border-width: 0">
-          <div
-            style="width: 100%"
-            class="ql-editor bg-light p-md-5 p-1"
-            *ngIf="editorContent != null"
-            [innerHTML]="editorContent | safe: 'html'"
-          ></div>
-        </div>
+          <span class="px-1">{{ temp.displayName }}</span><br>
+          <span class="px-1 text-secondary" style="font-size: 14px;">{{temp.created_time | date: 'short' }}</span>
       </div>
-    </div>
+      <div class="ql-container ql-snow ql-editor"
+          style="border-width: 0; font-size:25px; overflow:hidden !important">
+          <div style="width: 100%" class="p-md-5 p-1" *ngIf="editorContent!=null"
+              [innerHTML]="editorContent | safe: 'html'">
+          </div>
+      </div>
+      <!-- </div> -->
   </div>
+</div>
 </div>

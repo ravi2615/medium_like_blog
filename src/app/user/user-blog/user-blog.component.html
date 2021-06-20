@@ -1,5 +1,5 @@
-<div class="container py-5" *ngIf="isData">
-  <app-blogs [blogs]="articles" [articles]="articles"></app-blogs>
+<div class="container py-2" *ngIf="isData">
+  <app-blogs class="col-md-6" [blogs]="blogs" [articles]="articles" [blogsSize] = "articlesSize"></app-blogs>
 
   <div
     *ngIf="isLoading"

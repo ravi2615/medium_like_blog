@@ -1,40 +1,58 @@
-<div class="container my-5 py-5"  *ngIf="isData">
-<div  *ngFor="let article of articles; index as i">
-    <div class=" row d-flex align-items-center justify-content-center col-md-12 p-md-5 p-1">
-      <div class="m-3">
-        <img src="{{article.photoURL}}" aria-label="profile-pic" alt="profile-pic">
-        <span class="px-1 view_pro" (click)="userViewProfile(article.uid)">{{article.name}}</span>
-      </div>
-      <h1 class="text-center" [innerHTML]="article.title" 
+<div class="container mt-5 p-1 py-5 d-flex align-items-center justify-content-center"  *ngIf="isData">
+
+<div  *ngFor="let article of articles; index as i" class="bg-white col-md-8 col-12">
+  
+    <div class="p-md-2 py-5">
+      <h1 class="text-center text-capitalize" [innerHTML]="article.title" 
       style=
       "font-size:35px; 
       font-weight:bold"></h1>
-      <h4 class="text-center mb-5" 
+      <h4 class="text-center mb-5 text-capitalize" 
       style=
       "font-size: 18px;
       font-weight: normal;
-      color: rgb(92, 92, 92);
-      text-indent:10px">-{{article.subtitle}}</h4>
+      color: rgb(92, 92, 92);">{{article.subtitle}}</h4>
+      <div class="m-3 d-flex flex-row justify-content-between">
+        <div>
+          <img src="{{article.photoURL}}" aria-label="profile-pic" alt="profile-pic">
+          <span class="px-1 view_pro" (click)="userViewProfile(article.uid)">{{article.name}}</span><br>
+          <span class="px-1 text-secondary" style="font-size: 14px;">{{article.created_time | date: 'mediumDate' }}</span>
+        </div>
+        <div class="float-end">
+          <a id= "shareAll" class="text-primary" (click) ="share(article._id, article.title)" ><mat-icon>share</mat-icon></a>
+          <button
+          class="m-2"
+          mat-icon-button
+          color="white"
+          (click)="isLike = !isLike; LikeUpdate(article._id, article.likeCount)"
+        >
+          <!-- <mat-icon *ngIf="isLike">favorite</mat-icon> -->
+          <mat-icon >favorite_border</mat-icon>
+          <span>{{ article.likeCount }}</span>
+        </button>
+        </div>
+      </div>
       
-    <div class="share p-2 d-flex flex-row justify-content-around">
+      
+    <div class="share p-2 flex-row justify-content-around">
       <div id="share-one">
+        <h6>Share via :</h6>
         <a id= "fb" mat-button (click)="fbShare(article._id)"><img src="https://img.icons8.com/color/256/000000/facebook-new.png"></a>
         <a id= "linkedIn" mat-button (click)="linkedInShare(article._id, article.title)"><img src="https://img.icons8.com/color/256/000000/linkedin-circled--v1.png"></a>
         <!-- <a id= "email" mat-button (click)="emailShare(article._id, article.title)"><img src="https://cdn.worldvectorlogo.com/logos/gmail-icon.svg"></a> -->
         <a id= "whatsapp" mat-button (click)="whatsappShare(article._id, article.title)"><img src="https://img.icons8.com/color/512/000000/whatsapp--v1.png"/></a>
         <a id= "twitter" mat-button (click)="twitterShare(article._id, article.title)"><img src="https://img.icons8.com/color/64/000000/twitter--v1.png"/></a>
        </div> 
-       <a id= "shareAll" mat-mini-fab color="primary" (click) ="share(article._id, article.title)" ><mat-icon>share</mat-icon></a>
     </div>
-    <div class="ql-container ql-snow" 
-    style= "border-width: 0;">
-      <div style="width: 100%" class="ql-editor bg-light p-md-5 p-1" *ngIf="article!=null" [innerHTML]="article.blog | safe: 'html'" >
+    <div class="ql-container ql-snow ql-editor" 
+    style= "border-width: 0; font-size:25px; overflow:hidden !important">
+      <div style="width: 100%" class=" p-md-5 p-1" *ngIf="article!=null" [innerHTML]="article.blog | safe: 'html'" >
       </div>
       </div>
     </div>
+</div>
 </div>
 <div *ngIf="isLoading" class="row d-flex fixed justify-content-center loading"><mat-spinner></mat-spinner></div>
-</div>
     
     
 <h2 class="container text-center py-5" *ngIf="!isData">No Blog...</h2>
